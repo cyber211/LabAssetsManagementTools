@@ -1,0 +1,2 @@
+﻿QStatusBar:{background: brown;}
+QStatusBar::item{border: 1px solid red;border-radius: 3px;}

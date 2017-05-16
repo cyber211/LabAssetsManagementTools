@@ -1,0 +1,726 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1171</width>
+    <height>673</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Arial Black</family>
+    <pointsize>16</pointsize>
+    <weight>75</weight>
+    <bold>true</bold>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="Icon.qrc">
+    <normaloff>:/images/Title.bmp</normaloff>:/images/Title.bmp</iconset>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_Button">
+        <property name="spacing">
+         <number>10</number>
+        </property>
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="font">
+           <font>
+            <family>Arial Narrow</family>
+            <pointsize>18</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Current selected items:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEdit">
+          <property name="maximumSize">
+           <size>
+            <width>200</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Arial Narrow</family>
+            <pointsize>16</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="AddnewEquipment">
+          <property name="font">
+           <font>
+            <family>Arial Narrow</family>
+            <pointsize>18</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Add</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>images/new.png</normaloff>images/new.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="ModifyButton">
+          <property name="font">
+           <font>
+            <family>Arial Narrow</family>
+            <pointsize>16</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Modify</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>images/modify2.png</normaloff>images/modify2.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="DeleteButton">
+          <property name="font">
+           <font>
+            <family>Arial Narrow</family>
+            <pointsize>16</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Delete</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>images/deleteequipment.png</normaloff>images/deleteequipment.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="UpdateCalVerDate">
+          <property name="font">
+           <font>
+            <family>Arial Narrow</family>
+            <pointsize>16</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>View Date</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>images/calendar.png</normaloff>images/calendar.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_ViewMoreInfo">
+          <property name="font">
+           <font>
+            <family>Arial Narrow</family>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>View More</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>images/viewdetail.png</normaloff>images/viewdetail.png</iconset>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_Search" stretch="3,1,1,1">
+        <property name="spacing">
+         <number>10</number>
+        </property>
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLineEdit" name="lineEdit_Search">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Arial Narrow</family>
+            <pointsize>16</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboBox_Search">
+          <property name="font">
+           <font>
+            <family>Arial Narrow</family>
+            <weight>50</weight>
+            <bold>false</bold>
+           </font>
+          </property>
+          <item>
+           <property name="text">
+            <string>IG Serial Number</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Model Name</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Location or PIC</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Status</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>For What Project</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_Search">
+          <property name="font">
+           <font>
+            <family>Arial Narrow</family>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Search</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>images/search.png</normaloff>images/search.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_Export">
+          <property name="font">
+           <font>
+            <family>Arial Narrow</family>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Export to Excel</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>images/export_excel.png</normaloff>images/export_excel.png</iconset>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="Line" name="line">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,10">
+        <item>
+         <widget class="QListView" name="listView">
+          <property name="font">
+           <font>
+            <family>Arial Unicode MS</family>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="acceptDrops">
+           <bool>true</bool>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">selection-background-color: rgb(255, 170, 255);</string>
+          </property>
+          <property name="midLineWidth">
+           <number>0</number>
+          </property>
+          <property name="editTriggers">
+           <set>QAbstractItemView::NoEditTriggers</set>
+          </property>
+          <property name="selectionBehavior">
+           <enum>QAbstractItemView::SelectRows</enum>
+          </property>
+          <property name="movement">
+           <enum>QListView::Static</enum>
+          </property>
+          <property name="isWrapping" stdset="0">
+           <bool>false</bool>
+          </property>
+          <property name="viewMode">
+           <enum>QListView::ListMode</enum>
+          </property>
+          <property name="selectionRectVisible">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTableView" name="tableView">
+          <property name="font">
+           <font>
+            <family>Arial Unicode MS</family>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="autoFillBackground">
+           <bool>true</bool>
+          </property>
+          <property name="editTriggers">
+           <set>QAbstractItemView::NoEditTriggers</set>
+          </property>
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
+          <property name="selectionMode">
+           <enum>QAbstractItemView::SingleSelection</enum>
+          </property>
+          <property name="selectionBehavior">
+           <enum>QAbstractItemView::SelectRows</enum>
+          </property>
+          <property name="sortingEnabled">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1171</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuUser_Management">
+    <property name="title">
+     <string>User Management</string>
+    </property>
+    <addaction name="actionAdd_New_User"/>
+    <addaction name="actionDelete_User"/>
+    <addaction name="actionModify_User_Level"/>
+    <addaction name="actionView_all_user_info"/>
+   </widget>
+   <widget class="QMenu" name="menuData_Management">
+    <property name="title">
+     <string>Equipments Management</string>
+    </property>
+    <addaction name="actionAdd_new_Equipment"/>
+    <addaction name="actionModify_Ewuipment_information"/>
+    <addaction name="actionDelete_Equipment"/>
+    <addaction name="actionView_Calibration_verificatin_date"/>
+    <addaction name="actionView_More_information_of_Equipment"/>
+    <addaction name="separator"/>
+    <addaction name="actionSearch_2"/>
+    <addaction name="actionExport_to_Excel"/>
+   </widget>
+   <widget class="QMenu" name="menuAbout">
+    <property name="title">
+     <string>About</string>
+    </property>
+    <property name="separatorsCollapsible">
+     <bool>false</bool>
+    </property>
+    <addaction name="actionAbout_this_Program"/>
+   </widget>
+   <widget class="QMenu" name="menuLendManagement">
+    <property name="toolTip">
+     <string>Equipment Lent Management</string>
+    </property>
+    <property name="title">
+     <string>Equipment Lend Management</string>
+    </property>
+    <property name="toolTipsVisible">
+     <bool>true</bool>
+    </property>
+    <addaction name="actionEquipment_lent_Register"/>
+    <addaction name="actionEquipment_Return_Register"/>
+    <addaction name="actionView_All_lent_Equipments"/>
+   </widget>
+   <addaction name="menuUser_Management"/>
+   <addaction name="menuData_Management"/>
+   <addaction name="menuLendManagement"/>
+   <addaction name="menuAbout"/>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <property name="toolTip">
+    <string>Display toolbar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionAdd_New_User"/>
+   <addaction name="actionDelete_User"/>
+   <addaction name="actionModify_User_Level"/>
+   <addaction name="actionView_all_user_info"/>
+   <addaction name="separator"/>
+   <addaction name="actionAddNew"/>
+   <addaction name="actionModifyRecord"/>
+   <addaction name="actionDeleteRecord"/>
+   <addaction name="actionUpdateDate"/>
+   <addaction name="actionView_More_information_of_Equipment"/>
+   <addaction name="separator"/>
+   <addaction name="actionSearch"/>
+   <addaction name="actionExporttoExcel"/>
+   <addaction name="separator"/>
+   <addaction name="actionEquipment_lent_Register"/>
+   <addaction name="actionEquipment_Return_Register"/>
+   <addaction name="actionView_All_lent_Equipments"/>
+   <addaction name="separator"/>
+   <addaction name="actionAbout"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar">
+   <property name="styleSheet">
+    <string notr="true">font: 75 12pt &quot;Arial Narrow&quot;;
+border-top: 1px solid#a6a6a6;
+background-color: rgb(222, 222, 222);</string>
+   </property>
+   <property name="sizeGripEnabled">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <action name="actionAddNew">
+   <property name="icon">
+    <iconset>
+     <normaloff>images/new.png</normaloff>images/new.png</iconset>
+   </property>
+   <property name="text">
+    <string>AddNew</string>
+   </property>
+   <property name="toolTip">
+    <string>Add New Record</string>
+   </property>
+   <property name="statusTip">
+    <string>Add New Record</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionModifyRecord">
+   <property name="icon">
+    <iconset>
+     <normaloff>images/modify2.png</normaloff>images/modify2.png</iconset>
+   </property>
+   <property name="text">
+    <string>ModifyRecord</string>
+   </property>
+   <property name="toolTip">
+    <string>Modify the selected Record</string>
+   </property>
+   <property name="statusTip">
+    <string>Modify the selected Record</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+M</string>
+   </property>
+  </action>
+  <action name="actionDeleteRecord">
+   <property name="icon">
+    <iconset>
+     <normalon>images/delete.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>DeleteRecord</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete the Record</string>
+   </property>
+   <property name="statusTip">
+    <string>Delete the Record</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
+  </action>
+  <action name="actionUpdateDate">
+   <property name="icon">
+    <iconset>
+     <normaloff>images/calendar.png</normaloff>
+     <normalon>images/ok.png</normalon>images/calendar.png</iconset>
+   </property>
+   <property name="text">
+    <string>UpdateDate</string>
+   </property>
+   <property name="toolTip">
+    <string>History Cal/Ver Date</string>
+   </property>
+   <property name="statusTip">
+    <string>Update Cal/Ver Date</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+U</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="icon">
+    <iconset>
+     <normaloff>images/about2.png</normaloff>images/about2.png</iconset>
+   </property>
+   <property name="text">
+    <string>About</string>
+   </property>
+   <property name="toolTip">
+    <string>About this program</string>
+   </property>
+   <property name="statusTip">
+    <string>About this program</string>
+   </property>
+   <property name="shortcut">
+    <string>Shift+A</string>
+   </property>
+  </action>
+  <action name="actionAdd_New_User">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset>
+     <normaloff>images/adduser.png</normaloff>images/adduser.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add New User</string>
+   </property>
+  </action>
+  <action name="actionDelete_User">
+   <property name="icon">
+    <iconset>
+     <normaloff>images/deleteuser.png</normaloff>images/deleteuser.png</iconset>
+   </property>
+   <property name="text">
+    <string>Delete User</string>
+   </property>
+  </action>
+  <action name="actionModify_User_Level">
+   <property name="icon">
+    <iconset>
+     <normaloff>images/ModifyUser.png</normaloff>images/ModifyUser.png</iconset>
+   </property>
+   <property name="text">
+    <string>Modify User Level</string>
+   </property>
+  </action>
+  <action name="actionView_all_user_info">
+   <property name="icon">
+    <iconset>
+     <normaloff>images/person_details.png</normaloff>images/person_details.png</iconset>
+   </property>
+   <property name="text">
+    <string>View all user info</string>
+   </property>
+  </action>
+  <action name="actionAdd_new_Equipment">
+   <property name="icon">
+    <iconset>
+     <normaloff>images/new.png</normaloff>images/new.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add new Equipment</string>
+   </property>
+  </action>
+  <action name="actionModify_Ewuipment_information">
+   <property name="icon">
+    <iconset>
+     <normaloff>images/modify2.png</normaloff>images/modify2.png</iconset>
+   </property>
+   <property name="text">
+    <string>Modify Equipment information</string>
+   </property>
+  </action>
+  <action name="actionDelete_Equipment">
+   <property name="icon">
+    <iconset>
+     <normaloff>images/deleteequipment.png</normaloff>images/deleteequipment.png</iconset>
+   </property>
+   <property name="text">
+    <string>Delete Equipment</string>
+   </property>
+  </action>
+  <action name="actionView_Calibration_verificatin_date">
+   <property name="icon">
+    <iconset>
+     <normaloff>images/viewdate.png</normaloff>images/viewdate.png</iconset>
+   </property>
+   <property name="text">
+    <string>View Calibration/verificatin date</string>
+   </property>
+  </action>
+  <action name="actionView_More_information_of_Equipment">
+   <property name="icon">
+    <iconset>
+     <normaloff>images/list.png</normaloff>images/list.png</iconset>
+   </property>
+   <property name="text">
+    <string>View More information of Equipment</string>
+   </property>
+  </action>
+  <action name="actionAbout_this_Program">
+   <property name="icon">
+    <iconset>
+     <normaloff>images/about2.png</normaloff>images/about2.png</iconset>
+   </property>
+   <property name="text">
+    <string>About this Program</string>
+   </property>
+  </action>
+  <action name="actionSearch">
+   <property name="icon">
+    <iconset>
+     <normaloff>images/search2.png</normaloff>images/search2.png</iconset>
+   </property>
+   <property name="text">
+    <string>Search</string>
+   </property>
+  </action>
+  <action name="actionExporttoExcel">
+   <property name="icon">
+    <iconset>
+     <normaloff>images/export_excel.png</normaloff>images/export_excel.png</iconset>
+   </property>
+   <property name="text">
+    <string>ExporttoExcel</string>
+   </property>
+   <property name="toolTip">
+    <string>Export to Excel</string>
+   </property>
+  </action>
+  <action name="actionSearch_2">
+   <property name="icon">
+    <iconset>
+     <normaloff>images/search.png</normaloff>images/search.png</iconset>
+   </property>
+   <property name="text">
+    <string>Search</string>
+   </property>
+  </action>
+  <action name="actionExport_to_Excel">
+   <property name="icon">
+    <iconset>
+     <normaloff>images/export_excel.png</normaloff>images/export_excel.png</iconset>
+   </property>
+   <property name="text">
+    <string>Export to Excel</string>
+   </property>
+  </action>
+  <action name="actionEquipment_lent_Register">
+   <property name="icon">
+    <iconset>
+     <normaloff>images/out.png</normaloff>images/out.png</iconset>
+   </property>
+   <property name="text">
+    <string>Equipment lent Register</string>
+   </property>
+  </action>
+  <action name="actionEquipment_Return_Register">
+   <property name="icon">
+    <iconset>
+     <normaloff>images/in.png</normaloff>images/in.png</iconset>
+   </property>
+   <property name="text">
+    <string>Equipment Return Register</string>
+   </property>
+  </action>
+  <action name="actionView_All_lent_Equipments">
+   <property name="icon">
+    <iconset>
+     <normaloff>images/list_e.png</normaloff>images/list_e.png</iconset>
+   </property>
+   <property name="text">
+    <string>View All lent Equipments</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="Icon.qrc"/>
+ </resources>
+ <connections/>
+</ui>
