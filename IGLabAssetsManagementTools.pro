@@ -16,6 +16,7 @@ TEMPLATE = app
 
 include(./xlsx/qtxlsx.pri)
 
+#LIBS +=BOOST
 
 RC_FILE = Icon.rc
 
@@ -70,6 +71,9 @@ FORMS    += mainwindow.ui \
     updatecalverdatedlg.ui \
     logindlg.ui \
     moreinfordlg.ui
+
+TRANSLATIONS += translations/IGLabAM_cn.ts
+
 
 RESOURCES += \
     Icon.qrc

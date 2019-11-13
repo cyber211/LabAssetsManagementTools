@@ -33,6 +33,10 @@ public:
 
     CalOrVer CalVerCat;
     int UserLevel;
+    bool B_SendMail;
+    QString FileName_ATTACH;
+
+   // QTranslator trans;
 
     QString SQLString_ConsumableMaterial,SQLString_EquipmentAll,SQLString_EquipmentCAL,SQLString_EquipmentVER,SQLString_EquipmentOther;
 
@@ -66,6 +70,8 @@ private slots:
     void Search_ButtonClicked();
 
     void AboutThis();
+    void Translate_to_Chinese();
+    void Translate_to_English();
     //void AboutQT();
 
     void on_pushButton_Export_clicked();
@@ -84,6 +90,8 @@ public slots://
 
 private:
     Ui::MainWindow *ui;
+    QTranslator trans;
+
 };
 
 #endif // MAINWINDOW_H

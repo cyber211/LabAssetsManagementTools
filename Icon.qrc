@@ -2,5 +2,8 @@
     <qresource prefix="/">
         <file>main.qss</file>
         <file>images/Title.bmp</file>
+        <file>images/Title.ico</file>
+        <file>translations/IGLabAM_cn.qm</file>
+        <file>translations/IGLabAM_en.qm</file>
     </qresource>
 </RCC>

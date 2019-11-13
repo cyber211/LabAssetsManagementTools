@@ -19,7 +19,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string notr="true">MainWindow</string>
   </property>
   <property name="windowIcon">
    <iconset resource="Icon.qrc">
@@ -375,7 +375,7 @@
    </property>
    <widget class="QMenu" name="menuUser_Management">
     <property name="title">
-     <string>User Management</string>
+     <string>&amp;&amp;User Management</string>
     </property>
     <addaction name="actionAdd_New_User"/>
     <addaction name="actionDelete_User"/>
@@ -418,10 +418,18 @@
     <addaction name="actionEquipment_Return_Register"/>
     <addaction name="actionView_All_lent_Equipments"/>
    </widget>
+   <widget class="QMenu" name="menuLanguage">
+    <property name="title">
+     <string>Language</string>
+    </property>
+    <addaction name="actionChinese"/>
+    <addaction name="actionEnglish"/>
+   </widget>
    <addaction name="menuUser_Management"/>
    <addaction name="menuData_Management"/>
    <addaction name="menuLendManagement"/>
    <addaction name="menuAbout"/>
+   <addaction name="menuLanguage"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <property name="toolTip">
@@ -569,6 +577,9 @@ background-color: rgb(222, 222, 222);</string>
    <property name="text">
     <string>Add New User</string>
    </property>
+   <property name="statusTip">
+    <string>Add New User</string>
+   </property>
   </action>
   <action name="actionDelete_User">
    <property name="icon">
@@ -576,6 +587,9 @@ background-color: rgb(222, 222, 222);</string>
      <normaloff>images/deleteuser.png</normaloff>images/deleteuser.png</iconset>
    </property>
    <property name="text">
+    <string>Delete User</string>
+   </property>
+   <property name="statusTip">
     <string>Delete User</string>
    </property>
   </action>
@@ -587,6 +601,9 @@ background-color: rgb(222, 222, 222);</string>
    <property name="text">
     <string>Modify User Level</string>
    </property>
+   <property name="statusTip">
+    <string>Modify User Level</string>
+   </property>
   </action>
   <action name="actionView_all_user_info">
    <property name="icon">
@@ -594,6 +611,9 @@ background-color: rgb(222, 222, 222);</string>
      <normaloff>images/person_details.png</normaloff>images/person_details.png</iconset>
    </property>
    <property name="text">
+    <string>View all user info</string>
+   </property>
+   <property name="statusTip">
     <string>View all user info</string>
    </property>
   </action>
@@ -641,6 +661,9 @@ background-color: rgb(222, 222, 222);</string>
    <property name="text">
     <string>View More information of Equipment</string>
    </property>
+   <property name="statusTip">
+    <string>View More information of Equipment</string>
+   </property>
   </action>
   <action name="actionAbout_this_Program">
    <property name="icon">
@@ -659,6 +682,9 @@ background-color: rgb(222, 222, 222);</string>
    <property name="text">
     <string>Search</string>
    </property>
+   <property name="statusTip">
+    <string>Search</string>
+   </property>
   </action>
   <action name="actionExporttoExcel">
    <property name="icon">
@@ -670,6 +696,9 @@ background-color: rgb(222, 222, 222);</string>
    </property>
    <property name="toolTip">
     <string>Export to Excel</string>
+   </property>
+   <property name="statusTip">
+    <string>Export current table to Excel</string>
    </property>
   </action>
   <action name="actionSearch_2">
@@ -698,6 +727,9 @@ background-color: rgb(222, 222, 222);</string>
    <property name="text">
     <string>Equipment lent Register</string>
    </property>
+   <property name="statusTip">
+    <string>Equipment lent Register</string>
+   </property>
   </action>
   <action name="actionEquipment_Return_Register">
    <property name="icon">
@@ -705,6 +737,9 @@ background-color: rgb(222, 222, 222);</string>
      <normaloff>images/in.png</normaloff>images/in.png</iconset>
    </property>
    <property name="text">
+    <string>Equipment Return Register</string>
+   </property>
+   <property name="statusTip">
     <string>Equipment Return Register</string>
    </property>
   </action>
@@ -715,6 +750,28 @@ background-color: rgb(222, 222, 222);</string>
    </property>
    <property name="text">
     <string>View All lent Equipments</string>
+   </property>
+   <property name="statusTip">
+    <string>View All lent Equipments</string>
+   </property>
+  </action>
+  <action name="actionChinese">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Chinese</string>
+   </property>
+  </action>
+  <action name="actionEnglish">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>English</string>
    </property>
   </action>
  </widget>

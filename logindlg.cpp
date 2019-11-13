@@ -15,11 +15,11 @@ LoginDlg::LoginDlg(QWidget *parent) :
 
     if(RemoteDB)
     {
-        this->setWindowTitle("Login   -- Remote Database(Q Disk)");
+        this->setWindowTitle(tr("Login   -- Remote Database(Q Disk)"));
     }
     else
     {
-        this->setWindowTitle("Login   -- Local Database");
+        this->setWindowTitle(tr("Login   -- Local Database"));
     }
 
     connect(ui->pushButton_Login,SIGNAL(clicked()),this,SLOT(onLogin_Clicked()));

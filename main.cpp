@@ -86,7 +86,13 @@ void customMessageHandler(QtMsgType type, const char *msg)
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QApplication app(argc, argv);
+
+
+    //如果需要静态直接启动就翻译，那么就直接添加下面命令在main函数里面
+//    QTranslator translator;
+//    translator.load(QString(":/translations/IGLabAM_cn.qm"));
+//    app.installTranslator(&translator);
 
     if(log_on)
     {
@@ -110,7 +116,7 @@ int main(int argc, char *argv[])
 */
         w->show();
 
-        return a.exec();
+        return app.exec();
     }
     else
     {

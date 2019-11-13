@@ -465,14 +465,17 @@ void SmtpClient::sendMessage(const QString &text) throw (SendMessageTimeoutExcep
 
 void SmtpClient::socketStateChanged(QAbstractSocket::SocketState state)
 {
+
 }
 
 void SmtpClient::socketError(QAbstractSocket::SocketError socketError)
 {
+
 }
 
 void SmtpClient::socketReadyRead()
 {
+
 }
 
 /* [5] --- */

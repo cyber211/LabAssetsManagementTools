@@ -24,14 +24,8 @@
 
 //#include "./smtp/SmtpMime.h"
 
-#include "./smtp/smtpclient.h"
-#include "./smtp/mimepart.h"
-#include "./smtp/mimehtml.h"
-#include "./smtp/mimeattachment.h"
-#include "./smtp/mimemessage.h"
-#include "./smtp/mimetext.h"
-#include "./smtp/mimeinlinefile.h"
-#include "./smtp/mimefile.h"
+#include "smtp/smtpmime.h"
+#include "smtp/smtpclient.h"
 
 
 extern bool RemoteDB;
@@ -51,23 +45,24 @@ MainWindow::MainWindow(int userlevel,QWidget *parent) :
 
     QMenu *menu = QMainWindow::createPopupMenu();
     QList<QAction*> list = menu->actions();
-    list.at(0)->setText("Display/Hide ToolBar");
+    list.at(0)->setText(tr("Display/Hide ToolBar"));
 
 
 
     UserLevel = userlevel;
     qDebug() << UserLevel;
+    B_SendMail = false;
 
-    QString strMainWindowTitle = "Fluke IG Lab Equipments Management ---";
+    QString strMainWindowTitle = tr("Fluke IG Lab Equipments Management ---");
 
     if(UserLevel == 1)// admin: add menu user
     {
-        strMainWindowTitle = strMainWindowTitle + " ---Admin user";
+        strMainWindowTitle = strMainWindowTitle + tr(" ---Admin user");
         //setWindowTitle("Fluke IG Lab Equipments Management ---Admin user");
     }
     else if(UserLevel == 3)//  R USER, include Guest
     {
-        strMainWindowTitle = strMainWindowTitle + " ---Read only user";
+        strMainWindowTitle = strMainWindowTitle + tr(" ---Read only user");
         //setWindowTitle("Fluke IG Lab Equipments Management ---Read only user");
         //ui->menuUser_Management->setDisabled(true);
         ui->actionAdd_New_User->setDisabled(true);
@@ -94,7 +89,7 @@ MainWindow::MainWindow(int userlevel,QWidget *parent) :
     }
     else if(UserLevel == 2)// R+W  USER
     {
-        strMainWindowTitle = strMainWindowTitle + " ---Read and Write user";
+        strMainWindowTitle = strMainWindowTitle + tr(" ---Read and Write user");
         //setWindowTitle("Fluke IG Lab Equipments Management ---Read and Write user");
         //ui->menuUser_Management->setDisabled(true);
         ui->actionAdd_New_User->setDisabled(true);
@@ -104,11 +99,11 @@ MainWindow::MainWindow(int userlevel,QWidget *parent) :
 
     if(RemoteDB)
     {
-        strMainWindowTitle = strMainWindowTitle + "  ---Remote DB";
+        strMainWindowTitle = strMainWindowTitle + tr("  ---Remote DB");
     }
     else
     {
-        strMainWindowTitle = strMainWindowTitle + "  ---Local DB";
+        strMainWindowTitle = strMainWindowTitle + tr("  ---Local DB");
     }
 
 
@@ -135,13 +130,13 @@ MainWindow::MainWindow(int userlevel,QWidget *parent) :
 
     ui->listView->setSpacing(2);
     QStringList Equipments;
-    Equipments += "All Equipments";
-    Equipments += "Equipments(Calibration)";
-    Equipments += "Equipments(Verification)";
+    Equipments += tr("All Equipments");
+    Equipments += tr("Equipments(Calibration)");
+    Equipments += tr("Equipments(Verification)");
     Listmodel = new QStringListModel(Equipments);
     ui->listView->setModel(Listmodel);        //useList鏄釜QListView
-    Equipments += "Consumable Materials";
-    Equipments += "Other equipments";
+    Equipments += tr("Consumable Materials");
+    Equipments += tr("Other equipments");
     Listmodel->setStringList(Equipments);
 
     QModelIndex listviewindex;
@@ -159,7 +154,7 @@ MainWindow::MainWindow(int userlevel,QWidget *parent) :
     QString SQLString = SQLString_EquipmentAll;
     updateData2Tableview(SQLString);
     dbClose();
-    ui->statusBar->showMessage("All equipments were showed on the right table grid.");
+    ui->statusBar->showMessage(tr("All equipments were showed on the right table grid."));
 
     ui->mainToolBar->setIconSize(QSize(48,48));
 //--------------------------------------------------------------------------------------------------------
@@ -190,16 +185,42 @@ MainWindow::MainWindow(int userlevel,QWidget *parent) :
     connect(ui->actionDelete_Equipment,SIGNAL(triggered()),this,SLOT(Delete_Clicked()));
     connect(ui->actionView_Calibration_verificatin_date,SIGNAL(triggered()),this,SLOT(UpdateVerCalDate_ButtonClicked()));
     connect(ui->actionAbout_this_Program,SIGNAL(triggered()),this,SLOT(AboutThis()));
+    connect(ui->actionChinese,SIGNAL(triggered()),this,SLOT(Translate_to_Chinese()));
+    connect(ui->actionEnglish,SIGNAL(triggered()),this,SLOT(Translate_to_English()));
 
     connect(ui->actionSearch_2,SIGNAL(triggered()),this,SLOT(Search_ButtonClicked()));
     connect(ui->actionExport_to_Excel,SIGNAL(triggered()),this,SLOT(on_pushButton_Export_clicked()));
 
+    ui->retranslateUi(this);
 }
 
 MainWindow::~MainWindow()
 {
     dbClose();
+
     delete ui;
+}
+
+
+void MainWindow::Translate_to_Chinese()
+{
+    ui->actionEnglish->setChecked(false);
+    ui->actionChinese->setChecked(true);
+    QMessageBox::information(this,tr("info"),tr("LANGUAGE: Chinese"));
+
+    trans.load(":/translations/IGLabAM_cn.qm");
+    qApp->installTranslator(&trans);
+    ui->retranslateUi(this);
+}
+
+void MainWindow::Translate_to_English()
+{
+    ui->actionEnglish->setChecked(true);
+    ui->actionChinese->setChecked(false);
+    QMessageBox::information(this,"info","LANGUAGE: English");
+
+    qApp->removeTranslator(&trans);
+    ui->retranslateUi(this);
 }
 
 
@@ -285,6 +306,11 @@ void MainWindow::updateData2Tableview(QString SQLString)
          QDate Duedate,CurDate;
          CurDate = QDate::currentDate();
          QModelIndex indextemp;
+
+        qDebug() << "The Following equipment will overdue the calibration:";
+        QString txt = "The Following equipment will overdue the calibration:\r\n";
+        int duedate_Equip_Idx = 0;
+
         for(i = 0;i < RowNum ; i++ )
         {
             CellValue = TableModel->item(i,9)->data(Qt::DisplayRole).toString();
@@ -294,32 +320,28 @@ void MainWindow::updateData2Tableview(QString SQLString)
                 //Duedate = TableModel->item(i,5)->data().toDate();
                 indextemp = TableModel->index(i,5);
                 Duedate = TableModel->data(indextemp).toDate();
-                qDebug() << Duedate << CurDate;
+
                 if((Duedate.addDays(30) < CurDate))
                 {
-                    qDebug("send email true");
 
+                    qDebug() << duedate_Equip_Idx + 1 << ":\t"<< QString(TableModel->item(i,2)->data(Qt::DisplayRole).toString()) <<"\t"<< TableModel->item(i,1)->data(Qt::DisplayRole).toString() <<"\t\t"<< "Duedate:" << TableModel->data(indextemp).toString();
+                    txt.append(QString::number(duedate_Equip_Idx + 1));//index
+                    txt.append(":\t");
+                    txt.append(QString(TableModel->item(i,2)->data(Qt::DisplayRole).toString()));//IG_SN
+                    txt.append("\tDuedate:");
+                    txt.append(TableModel->data(indextemp).toString());//duedate
+                    txt.append("\t");
+                    txt.append(TableModel->item(i,1)->data(Qt::DisplayRole).toString());//Model Name
+                    txt.append("\t\t");
+                    txt.append(TableModel->item(i,0)->data(Qt::DisplayRole).toString());//equipment Name
 
+                    txt.append("\r\n");
 
+                    duedate_Equip_Idx++;
+                    //qDebug("send email true");
 
-
-/*
-                    QTcpSocket socket;
-
-                    socket.connectToHost("outlookanywhere.danahertm.com", 443);
-
-                   if (socket.waitForConnected(200))
-                   {
-                           qDebug() << "smtp server connected success.";
-                           readWelcome(socket);
-                           smtpCommunication(socket);
-                           socket.close();
-                   }
-                   else
-                   {
-                           qDebug() << "connection failed.";
-                   }
-*/                }
+                    B_SendMail = true;
+                }
 
                 if(Duedate < CurDate)
                 {
@@ -329,15 +351,23 @@ void MainWindow::updateData2Tableview(QString SQLString)
                         //update status ziduan to tingyong
 
 
-
-
-
-
-
                     }
                 }
             }
         }
+        FileName_ATTACH = "EquipmentList";
+        FileName_ATTACH.append(CurDate.toString("yyyy_MM_dd"));
+        FileName_ATTACH.append(".txt");
+
+        QFile outFile(FileName_ATTACH);
+
+        if(outFile.exists())
+        {
+            outFile.remove();
+        }
+        outFile.open(QIODevice::WriteOnly | QIODevice::Append|QIODevice::Text);
+        QTextStream ts(&outFile);
+        ts << txt << endl;
     }
 }
 
@@ -365,7 +395,7 @@ void MainWindow::TableView_itemClicked()
    QModelIndex indextemp = modessl->index(TableCurRow,col);//閬嶅巻绗瑀ow琛岀殑3鍒?
    QVariant datatemp = modessl->data(indextemp);//杩欎釜鏄崟鍏冩牸鐨勫�?
    CellText = datatemp.toString();
-   ui->lineEdit->setText(CellText);
+   ui->lineEdit->setText(tr(CellText.toLatin1()));
 
    if(ListCurROW == 0)//Allequipment table,鎵惧埌CAL锛孷ER瀛楁鍒ゆ柇鏄痗al杩樻槸ver
    {
@@ -400,23 +430,23 @@ void MainWindow::ListView_itemClicked()
     {
     case 0://All equipments
         SQLString = SQLString_EquipmentAll;
-        ui->statusBar->showMessage("All equipments will be showed on the right table grid.");
+        ui->statusBar->showMessage(tr("All equipments will be showed on the right table grid."));
         break;
     case 1://Calibration equipments
         SQLString = SQLString_EquipmentCAL;
-        ui->statusBar->showMessage("Calibration equipments will be showed on the right table grid.");
+        ui->statusBar->showMessage(tr("Calibration equipments will be showed on the right table grid."));
         break;
     case 2://Verificatioin equipments
         SQLString = SQLString_EquipmentVER;
-        ui->statusBar->showMessage("Verificatioin equipments will be showed on the right table grid.");
+        ui->statusBar->showMessage(tr("Verificatioin equipments will be showed on the right table grid."));
         break;
     case 3://consumable material
         SQLString = SQLString_ConsumableMaterial;
-        ui->statusBar->showMessage("consumable material will be showed on the right table grid.");
+        ui->statusBar->showMessage(tr("consumable material will be showed on the right table grid."));
         break;
     case 4://Other equipments
         SQLString = SQLString_EquipmentOther;
-        ui->statusBar->showMessage("Other equipments will be showed on the right table grid.");
+        ui->statusBar->showMessage(tr("Other equipments will be showed on the right table grid."));
         break;
     }
     dbOpen();
@@ -430,8 +460,8 @@ void MainWindow::Addnew_itemClicked()
     if((ui->listView->currentIndex().row())== -1)
     {
         QMessageBox Msg_warning;
-        Msg_warning.setWindowTitle("Warning!");
-        Msg_warning.setText("Please select a Database first!");
+        Msg_warning.setWindowTitle(tr("Warning!"));
+        Msg_warning.setText(tr("Please select a Database first!"));
 
         Msg_warning.setStandardButtons(QMessageBox::Ok);
 
@@ -460,8 +490,8 @@ void MainWindow::Modify_itemClicked()
     if((ui->listView->currentIndex().row())== -1)
     {
         QMessageBox Msg_warning;
-        Msg_warning.setWindowTitle("Warning!");
-        Msg_warning.setText("Please select a Database first!");
+        Msg_warning.setWindowTitle(tr("Warning!"));
+        Msg_warning.setText(tr("Please select a Database first!"));
 
         Msg_warning.setStandardButtons(QMessageBox::Ok);
 
@@ -476,8 +506,8 @@ void MainWindow::Modify_itemClicked()
         if (CurRow == -1)
         {
             QMessageBox Msg_warning;
-            Msg_warning.setWindowTitle("Warning!");
-            Msg_warning.setText("Please select a item first!");
+            Msg_warning.setWindowTitle(tr("Warning!"));
+            Msg_warning.setText(tr("Please select a item first!"));
 
             Msg_warning.setStandardButtons(QMessageBox::Ok);
 
@@ -500,7 +530,7 @@ void MainWindow::Modify_itemClicked()
             {
                 addNewItem* ModifyItemsdialog;
                 ModifyItemsdialog = new addNewItem(this);
-                ModifyItemsdialog->setWindowTitle("Modify the selected Material information");
+                ModifyItemsdialog->setWindowTitle(tr("Modify the selected Material information"));
                 //閬嶅巻tableview锛屽苟灏嗘暟鎹啓鍒癐temList涓?,閫氳繃淇″彿鍙戦�佺粰dialog
 
                 modessl = ui->tableView->model();
@@ -522,7 +552,7 @@ void MainWindow::Modify_itemClicked()
             {
                 addNewEquipment* ModifyEquipmentdialog;
                 ModifyEquipmentdialog = new addNewEquipment(this);
-                ModifyEquipmentdialog->setWindowTitle("Modify the selected equipment information");
+                ModifyEquipmentdialog->setWindowTitle(tr("Modify the selected equipment information"));
 
                 QString SQLString;
                 if(ui->listView->currentIndex().row() == 0)
@@ -649,8 +679,8 @@ void MainWindow::UpdateVerCalDate_ButtonClicked()
         else
         {
             QMessageBox Msg_warning;
-            Msg_warning.setWindowTitle("Warning!");
-            Msg_warning.setText("Please select a Calibration or Verification Record first!");
+            Msg_warning.setWindowTitle(tr("Warning!"));
+            Msg_warning.setText(tr("Please select a Calibration or Verification Record first!"));
             Msg_warning.setStandardButtons(QMessageBox::Ok);
             Msg_warning.setIcon(QMessageBox::Warning);
             Msg_warning.exec();
@@ -659,8 +689,8 @@ void MainWindow::UpdateVerCalDate_ButtonClicked()
     else
     {
         QMessageBox Msg_warning;
-        Msg_warning.setWindowTitle("Warning!");
-        Msg_warning.setText("Please select a Calibration or Verification Database first!");
+        Msg_warning.setWindowTitle(tr("Warning!"));
+        Msg_warning.setText(tr("Please select a Calibration or Verification Database first!"));
 
         Msg_warning.setStandardButtons(QMessageBox::Ok);
 
@@ -683,8 +713,8 @@ void MainWindow::Delete_Clicked()//鐢ㄤ簬鍒犻櫎鏌愪竴鏉¤褰?
     if(String_Key.isEmpty())
     {
         QMessageBox Msg_warning;
-        Msg_warning.setWindowTitle("Warning!");
-        Msg_warning.setText("Please select a item first!");
+        Msg_warning.setWindowTitle(tr("Warning!"));
+        Msg_warning.setText(tr("Please select a item first!"));
 
         Msg_warning.setStandardButtons(QMessageBox::Ok);
         Msg_warning.setIcon(QMessageBox::Warning);
@@ -693,9 +723,9 @@ void MainWindow::Delete_Clicked()//鐢ㄤ簬鍒犻櫎鏌愪竴鏉¤褰?
     else
     {
         QMessageBox Msg_deletewarning;
-        Msg_deletewarning.setWindowTitle("Warning!");
-        Msg_deletewarning.setText("A equipment will be deleted from the database!");
-        Msg_deletewarning.setInformativeText("Do you really want to delete this item?");
+        Msg_deletewarning.setWindowTitle(tr("Warning!"));
+        Msg_deletewarning.setText(tr("A equipment will be deleted from the database!"));
+        Msg_deletewarning.setInformativeText(tr("Do you really want to delete this item?"));
         Msg_deletewarning.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
         Msg_deletewarning.setDefaultButton(QMessageBox::Cancel);
         Msg_deletewarning.setIcon(QMessageBox::Warning);
@@ -1232,8 +1262,8 @@ void MainWindow::Search_ButtonClicked()
     if(Search_Condition.isEmpty())
     {
         QMessageBox Msg_warning;
-        Msg_warning.setWindowTitle("Warning!");
-        Msg_warning.setText("Please fill the search conditin first!");
+        Msg_warning.setWindowTitle(tr("Warning!"));
+        Msg_warning.setText(tr("Please fill the search conditin first!"));
 
         Msg_warning.setStandardButtons(QMessageBox::Ok);
 
@@ -1271,12 +1301,12 @@ void MainWindow::AboutThis()
 
     QString AboutString;
 
-    AboutString = "This is a equipment calibration and verify record database client\r\n\
+    AboutString = tr("This is a equipment calibration and verify record database client\r\n\
             for Fluke CPD Product Evaluation Team\r\n\r\n \
             Release Version: V1.0\r\n\r\n\
             Designed by Bob Cao       Email:yongbo.cao@fluke.com\r\n\
-            Fluke CPD Copyright (c) 2014";
-    QMessageBox::about(this,"About",AboutString);
+            Fluke CPD Copyright (c) 2014");
+    QMessageBox::about(this,tr("About"),AboutString);
 
 }
 
@@ -1379,6 +1409,12 @@ void MainWindow::updateSQLdb_UpdateDate(QList <QStandardItem*>ItemList)
 
 void MainWindow::on_pushButton_Export_clicked()
 {
+
+
+    //SendEmail();
+    //return;
+
+
     QString fileName;// 调用save dialog，取得filename
 
     QFileDialog saveDlg;
@@ -1410,17 +1446,13 @@ void MainWindow::on_pushButton_Export_clicked()
 //tableview 导出 excel 并且设置好格式：并打开
 void MainWindow::ExportToXlsx(QAbstractItemModel* view, QString fileName)
 {
-
-    SendEmail();
-    // create a new file
-    //QXlsx::Document xlsx;
     int i = 0;
     int j = 0;
 
     // open a existing file
     QXlsx::Document *xlsx;
     xlsx = new QXlsx::Document();
-    xlsx->addSheet("Equipment List",QXlsx::AbstractSheet::ST_WorkSheet);
+    xlsx->addSheet(tr("Equipment List"),QXlsx::AbstractSheet::ST_WorkSheet);
 
     QXlsx::Format formatTitle;
     formatTitle.setFontColor(QColor(Qt::black));
@@ -1434,12 +1466,12 @@ void MainWindow::ExportToXlsx(QAbstractItemModel* view, QString fileName)
     QString TitleString;
     switch(index)
     {
-        case 0:TitleString = "All Equipment List:";break;
-        case 1:TitleString = "Calibration Equipment List:";break;
-        case 2:TitleString = "Verification Equipment List:";break;
-        case 3:TitleString = "Cosumable Material List:";break;
-        case 4:TitleString = "Other Equipment List:";break;
-        default:TitleString = "Equipment List:";break;
+        case 0:TitleString = tr("All Equipment List:");break;
+        case 1:TitleString = tr("Calibration Equipment List:");break;
+        case 2:TitleString = tr("Verification Equipment List:");break;
+        case 3:TitleString = tr("Cosumable Material List:");break;
+        case 4:TitleString = tr("Other Equipment List:");break;
+        default:TitleString = tr("Equipment List:");break;
     }
     xlsx->write(1,1,TitleString,formatTitle);
 
@@ -1603,114 +1635,155 @@ void MainWindow::on_pushButton_ViewMoreInfo_clicked()
 
 }
 
-
 void MainWindow::SendEmail()
 {
-    // First we need to create an SmtpClient object
-    // We will use the Gmail's smtp server (smtp.gmail.com, port 465, ssl)
-    SmtpClient smtp("outlookanywhere.danahertm.com", 443, SmtpClient::SslConnection);
+    QString txtSender,txtSenderPwd,txtSenderAddr,txtReceiverAddr,txtTitle,txtContent;
+    QString SERVER = "smtp.163.com"; //This is default, will be relaced by ini config file;
+    int PORT_MAIL = 25;//This is default, will be relaced by ini config file;
 
-    // We need to set the username (your email address) and the password
-    // for smtp authentification.
-    smtp.setUser("Global\\ycao3");
-    smtp.setPassword("Test004Bob");
+    // Get Email Config from ini file
+    QSettings *Email_Config = new QSettings("EmailSettings.ini", QSettings::IniFormat);
+    Email_Config->beginGroup("Email");// [Section]
+    QStringList KeyList = Email_Config->allKeys();//  Key List， it will be re-sort by ascending
+    txtSender = Email_Config->value(KeyList[4]).toString();
+    txtSenderPwd = Email_Config->value(KeyList[6]).toString();
+    txtSenderAddr =Email_Config->value(KeyList[5]).toString();
+    txtReceiverAddr = Email_Config->value(KeyList[3]).toString();
+    txtTitle = Email_Config->value(KeyList[7]).toString();
+    txtContent = Email_Config->value(KeyList[2]).toString();
+    SERVER = Email_Config->value(KeyList[1]).toString();
+    PORT_MAIL = Email_Config->value(KeyList[0]).toString().toInt();
+    Email_Config->endGroup();
+    //读入入完成后删除指针
+    delete Email_Config;
 
+    if (txtSender=="")
+    {
+        qDebug() << "Error: Please fill User Name at ini file!";
+        return;
+    }
+    if (txtSenderPwd=="")
+    {
+        qDebug() << "Error: Please fill pwd at ini file!!";
+        return;
+    }
+    if (txtSenderAddr=="")
+    {
+       qDebug() << "Error: Please fill sender at ini file!!";
+       return;
+    }
+    if (txtReceiverAddr=="")
+    {
+        qDebug() << "Error: Please fill Receiver at ini file!!";
+        return;
+    }
+    if (txtTitle=="")
+    {
+        qDebug() << "Error: Please fill PreTitle at ini file!!";
+        return;
+    }
+    if (SERVER=="")
+    {
+        qDebug() << "Error: Please fill the email server at ini file!!";
+        return;
+    }
+    if (PORT_MAIL==0)
+    {
+        qDebug() << "Error: Please fill the email net port at ini file，default is port 25!!";
+        return;
+    }
 
-    // Now we create a MimeMessage object. This will be the email.
+    //实例化发送邮件对象
+    SmtpClient smtp(SERVER,PORT_MAIL,SmtpClient::TcpConnection);//SmtpClient::SslConnection,  Server, port, ssl,  SmtpClient::TcpConnection
+    //connect(smtp, SIGNAL(SmtpClient::smtpError(SmtpClient::SmtpError)), this, SLOT(Parsing_smtperror(SmtpClient::SmtpError)));// for parsding send email errors
+    smtp.setUser(txtSender);
+    smtp.setPassword(txtSenderPwd);
+
+    //构建邮件主题,包含发件人收件人附件等.
     MimeMessage message;
+    message.setSender(new EmailAddress(txtSenderAddr));
 
-    message.setSender(new EmailAddress("yongbo.cao@fluke.com", "Bob"));
-    message.addRecipient(new EmailAddress("yongbo.cao@fluke.com", "ycao3"));
-    message.setSubject("SmtpClient for Qt - Demo");
+    //逐个添加收件人
+    QStringList receiver = txtReceiverAddr.split(';');
+    for (int i = 0; i < receiver.size(); i++){
+        message.addRecipient(new EmailAddress(receiver.at(i)));
+    }
+    //构建邮件标题
+    message.setSubject(txtTitle);
 
-    // Now add some text to the email.    // First we create a MimeText object.
+    //构建邮件正文
+    QString Str_txtContent;
+    Str_txtContent = txtContent;
+    Str_txtContent.append(tr("This is a notice Email for Test team. Please ignore this email if you are not the relevent person!\r\n\r\n\
+Thanks\r\n\r\n\
+\
+IG Lab Equipments Management Tool.\r\n\
+Fluke CPD Test Team. "));
+
     MimeText text;
-    text.setText("Hi,All\n\nThis is a Notification email message.\n\nThe IG Lab equipment calibration date will be expired, You may be arrage the calibration task in the following 30 days.\n\nThis is a auto send message, Please DO NOT Reply this email, \nNotification from IG Lab equipment management Tool. ");
-
-    // Now add it to the mail
+    text.setText(Str_txtContent);
     message.addPart(&text);
 
-    // Now we can send the mail
-    if(smtp.connectToHost())
+    //构建附件
+    QString atta = FileName_ATTACH;
+
+    if (atta!="")
     {
-        qDebug("Connect to Host successfully!");
-    }
-    else
-    {
-        qDebug("Connect to Host Failed!");
+        QStringList attas=atta.split(";");
+        foreach (QString tempAtta, attas)
+        {
+            QFile *file=new QFile(tempAtta);
+            if (file->exists())
+            {
+                message.addPart(new MimeAttachment(file));
+            }
+        }
     }
 
-    if(smtp.login())
-    {
-        qDebug("Login successfully!");
-    }
-    else
-    {
-        qDebug("Login Failed!");
-    }
 
-    if(smtp.sendMail(message))
+    // Connect to server
+    try
     {
-        qDebug("Send Email successfully!");
-    }
-    else
-    {
-        qDebug("Send Email Failed!");
-    }
+        if (!smtp.connectToHost()){
+            qDebug() << "Error:Server connect failed! Try Again.";
 
+            if (!smtp.connectToHost())
+            {
+                qDebug() << "Error:Server connect failed Twice!";
+                return;
+            }
+        }
+        // Login
+        if (!smtp.login()){
+            qDebug() << "Error:User login fail! try again.";
+            if (!smtp.login())
+            {
+                qDebug() << "Error:User login fail! Twice!";
+                return;
+            }
+            return;
+        }
+        // Send Mail
+        if (!smtp.sendMail(message))
+        {
+            qDebug() << "Error:Email Send Failed! try again";
+            if (!smtp.sendMail(message))
+            {
+                qDebug() << "Error:Email Send Failed twice! ";
+                return;
+            }
+
+            return;
+        }
+        else
+        {
+            qDebug() << "Info:Email send successfully!";
+        }
+    }
+    catch (SmtpClient::SmtpError e)
+    {
+        qDebug() << e;
+
+    }
     smtp.quit();
-
 }
-
-
-/*
-void MainWindow::communication(QTcpSocket & socket, const char *msg)
-{
-        char data[1024];
-
-        if (socket.write(msg, qstrlen(msg)) == -1)
-        {
-                qDebug() << "@@@@@@@@@@@@@@ socket.write failed";
-        }
-        socket.flush();
-
-        if (socket.waitForReadyRead(-1) == true)
-        {
-            memset(data, '\0', sizeof(data));
-            socket.readLine(data, 1024);
-            qDebug() << data;
-        }
-}
-
-
-void MainWindow::smtpCommunication(QTcpSocket & socket)
-{
-        communication(socket, "hello outlookanywhere.danahertm.com\r\n");
-        communication(socket, "auth login\r\n");
-        communication(socket, QByteArray("yongbo.cao@fluke.com").toBase64()+"\r\n");
-        communication(socket, QByteArray("Caoyongbo").toBase64()+"\r\n");
-        communication(socket, "mail from: <yongbo.cao@fluke.com>\r\n");
-        communication(socket, "rcpt to: <yongbo.cao@fluke.com>\r\n");
-        communication(socket, "data\r\n");
-        communication(socket, "From: yongbo.cao@fluke.com\r\nTo: yongbo.cao@fluke.com\r\n"
-                              "Subject: QT EMAIL\r\n\r\n"
-                              "QT EMail Test!"
-                              "\r\n.\r\n");
-        communication(socket, "quit\r\n");
-
-        qDebug() << "send email ok." << endl;
-}
-
-void MainWindow::readWelcome(QTcpSocket & socket)
-{
-        char data[1024];
-        int len;
-
-        if (socket.waitForReadyRead(-1) == true)
-        {
-            memset(data, '\0', sizeof(data));
-            len = socket.readLine(data, 1024);
-            qDebug() << data << endl;
-        }
-}
-*/
